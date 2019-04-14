@@ -1,0 +1,38 @@
+On 8-core laptop, cpython
+
+Result: for this test, multi-process workload_distributor with
+efficient arg_divider is by far the fastest.
+
+Note: each use case is unique. It's a compromise of passing around
+pickled data structure in multi-process approach vs. dealing with GIL
+while having thread overhead with thread approach. Thread approach
+probably makes sense for IO-bound tasks (not covered in this test
+case) For the CPU-bound task in this case plain undecorated approach
+beats multi-threaded implementation. Intelligent arg_divider always
+beats vanilla Pool/map approach, in both multi-thread and
+multi-process implementations.
+
+# result of running multi-process workload_distributor with intelligent list divider
+shell$ python performance_test1.py -s 1000
+INFO:root:Actual number of processes in the pool: 8
+INFO:root:Time to run distribute_processes_w_arg_divide: 23.7850010395
+
+# result of running multi-thread workload_distributor with intelligent list divider
+shell$ python performance_test2.py -s 1000
+INFO:root:Actual number of processes in the pool: 8
+INFO:root:Time to run distribute_threads_w_arg_divide: 110.155240059
+
+# result of running multi-process workload_distributor with vanilla Pool/map approach
+shell$ python performance_test3.py -s 1000
+INFO:root:Actual number of processes in the pool: 8
+INFO:root:Time to run distribute_processes_wo_arg_divide: 84.1279079914
+
+# result of running multi-thread workload_distributor with vanilla Pool/map approach
+shell$ python performance_test4.py -s 1000
+INFO:root:Actual number of processes in the pool: 8
+INFO:root:Time to run distribute_threads_wo_arg_divide: 401.021015882
+
+# no concurrency
+shell$ $ python performance_test5.py -s 1000
+INFO:root:Time to run distribute_undecorated: 70.1858758926
+

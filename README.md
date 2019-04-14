@@ -14,11 +14,11 @@ Motivation:
   end result from partials.
 
 - it may be desirable to "map" args to function in a more
-  deterministic way than provided by vanilla Pool/map approach. For
+  economical way than provided by vanilla Pool/map approach. For
   example, if in addition to a dividable argument one or more of
   function arguments is of large size, it's desirable to minimize
   serialization and string passing overhead when function is mapped to
-  multiple processes.
+  multiple processes. This is demonstrated in test/performance_test*
 
 How-To:
 
